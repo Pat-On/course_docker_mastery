@@ -72,6 +72,8 @@ use docker container start to start an existing stopped one
 
 `docker container rm -f (container_id)` - with forcing flag
 
+----------------------------------------
+
 ## What happens in `docker container run`
 
 1. Looks for that image locally in image cache, does not find anything
@@ -84,6 +86,8 @@ use docker container start to start an existing stopped one
 
 Example:
 `docker container run --publish 8080:80 --name webhost -d nginx:1.11 nginx -T`
+
+----------------------------------------
 
 ## Container vs VM
 
@@ -116,3 +120,18 @@ https://www.youtube.com/watch?v=sK5i-N34im8&list=PLBmVKD7o3L8v7Kl_XXh3KaJl9Qw2ly
 https://github.com/mikegcoleman/docker101/blob/master/Docker_eBook_Jan_2017.pdf
 
 `ps aux | grep mongo`
+
+----------------------------------------
+
+## Assignment: manage Multiple Containers
+- docs.docker.com and `--help` are your friend xD
+- run a nginx, a mysql and a httpd (apache) server
+- run all of them `--detach` (-d), name them with --name
+- nginx should listen on 80:80, httpd on 8080:80, mysql on 3306:3306
+- when running mysql, use the --env option (or -e) to pass in `MYSQL_RANDOM_ROOD_PASSWORD=yes`
+use `docker container logs` on mysql to find the random password it created on startup
+- clean it all up with `docker container stop` and `docker container rm`
+(both can accept multiple names or ID's)
+
+----------------------------------------
+
