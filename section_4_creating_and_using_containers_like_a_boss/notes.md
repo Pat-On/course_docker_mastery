@@ -172,3 +172,90 @@ to test:
 `curl localhost:8080`
 
 `docker container rm -f  proxy webserver db`
+
+---
+
+## What's going on in containers: CLI Process Monitoring
+
+- `docker container top` - process list in one container
+
+```
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                3552                3532                0                   19:40               ?                   00:00:00            httpd -DFOREGROUND
+www-data            3587                3552                0                   19:40               ?                   00:00:00            httpd -DFOREGROUND
+www-data            3588                3552                0                   19:40               ?                   00:00:00            httpd -DFOREGROUND
+www-data            3589                3552                0                   19:40               ?                   00:00:00            httpd -DFOREGROUND
+```
+
+- `docker container inspect` - details of one container config
+  show metadata about the container (startup, config, volumes, networking, etc.) - data in the 'json' format
+- `docker container stats` - performance stats for all containers
+  show live performance data fore all containers
+
+```
+CONTAINER ID   NAME        CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O   PIDS
+c010221ba7a5   webserver   0.01%     24.01MiB / 7.715GiB   0.30%     908B / 0B        0B / 0B     82
+4019bf6f762a   proxy       0.00%     6.855MiB / 7.715GiB   0.09%     213kB / 95.9kB   0B / 0B     9
+CONTAINER ID   NAME        CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O   PIDS
+c010221ba7a5   webserver   0.01%     24.01MiB / 7.715GiB   0.30%     908B / 0B        0B / 0B     82
+4019bf6f762a   proxy       0.00%     6.855MiB / 7.715GiB   0.09%     213kB / 95.9kB   0B / 0B     9
+```
+
+---
+
+## Getting a Shell Inside Containers: No Need for SSH
+
+- `docker container run -it` - start new container interactively
+- `docker container exec -it` - run additional command in existing container
+- Different Linux distros in containers
+
+No SSH Needed - Docker cli is great substitute for adding SSH containers
+
+`docker container run -it`
+
+`i` - interactive - Keep STDIN open even if not attached (Keep session open to receive terminal input)
+`t` - pseudo-tty - simulates a real terminal, like what SSH does
+
+`docker container run -it --name proxy2 nginx bash`
+
+- If run with -it, it will give you a terminal inside the running container
+
+`docker container run -it --name ubuntu ubuntu`
+
+- Its default CMD is bash so we do not have to specify it
+  and then you can simply use apt-get
+
+`docker container start -ai ubuntu`
+
+`docker container exec -it mysql bash` - run additional process in running container
+
+`Alpine Linux` - A small security-focused distribution
+
+`docker pull alpine` - example of command that is pulling image
+
+`docker image ls` - listing images
+
+```
+REPOSITORY               TAG       IMAGE ID       CREATED        SIZE
+mongo                    latest    dcfda10b61c5   20 hours ago   645MB
+mariadb                  latest    6e11fcfc66ad   2 days ago     401MB
+nginx                    latest    904b8cb13b93   3 days ago     142MB
+httpd                    latest    b304753f3b6e   3 days ago     145MB
+ubuntu                   latest    74f2314a03de   3 days ago     77.8MB
+mysql                    latest    4f06b49211c0   8 days ago     530MB
+alpine                   latest    b2aa39c304c2   3 weeks ago    7.05MB
+docker/getting-started   latest    3e4394f6b72f   2 months ago   47MB
+```
+
+---
+
+`docker container run -it alpine bash`
+
+Results:
+
+```
+docker: Error response from daemon: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "bash": executable file not found in $PATH: unknown.
+ERRO[0001] error waiting for container: context canceled
+```
+
+`docker container run -it alpine sh` - is connecting us to sh (command line tool - like not fully features bash)
