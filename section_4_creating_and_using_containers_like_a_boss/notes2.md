@@ -291,7 +291,7 @@ Do your best to avoid it!
 `Docker DNS` - Docker daemon has a built-in DNS server that containers use by default
 `Docker Default Names` - Docker default the hostname to the container's name, but you can also set aliases.
 
-
 ### Docker Networks: DNS
+
 - Containers should not rely on IP's for inter-communication
 - DNS for friendly names ios built-in if you use custom networks
