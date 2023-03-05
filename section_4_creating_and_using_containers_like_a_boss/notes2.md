@@ -276,5 +276,22 @@ Options:
 - This gets even better later with Swarm and Overlay networks
 
 ---
+
 # Docker Networks: DNS and How Containers Find Each Other
 
+- Understand how DNS is the key to easy inter-container comms
+- see how it works by default with custom networks
+- learn how to use `--link` to enable DNS on default bridge network
+
+!Important
+Forget IS's
+Static IP's and using IP's for talking to containers is an anti-pattern.
+Do your best to avoid it!
+
+`Docker DNS` - Docker daemon has a built-in DNS server that containers use by default
+`Docker Default Names` - Docker default the hostname to the container's name, but you can also set aliases.
+
+
+### Docker Networks: DNS
+- Containers should not rely on IP's for inter-communication
+- DNS for friendly names ios built-in if you use custom networks
