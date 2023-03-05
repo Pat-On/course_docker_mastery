@@ -43,3 +43,9 @@ curl search
 
 option 2:
 replace elastic search with `bretfisher/httpenv` - port 8888
+
+`docker container run -d --net dude --net-alias search elasticsearch:2`
+
+`--net-alias` and `--network-alias` - both work!
+
+`docker container run --rm --net dude centos curl -s search:9200`
