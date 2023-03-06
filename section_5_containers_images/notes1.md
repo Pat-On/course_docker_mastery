@@ -263,3 +263,4 @@ Output - just metadata!
 - This saves storage space on host and transfer time on push/pull
 - A container is just a single read/write layer on top of image
 - `docker image history` and `inspect` commands can teach us
+0
