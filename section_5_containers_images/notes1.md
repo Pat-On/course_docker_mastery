@@ -10,6 +10,28 @@ Section about:
 
 ---
 
+Interesting Links:
+https://www.bretfisher.com/kubernetes-vs-docker/
+https://opencontainers.org/about/overview/
+https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016
+https://opencontainers.org/
+https://docs.google.com/spreadsheets/d/1ZT8m4gpvh6xhHYIi4Ui19uHcMpymwFXpTAvd3EcgSm4/edit#gid=0
+https://docs.docker.com/desktop/
+https://github.com/mikegcoleman/docker101/blob/master/Docker_eBook_Jan_2017.pdf
+https://www.youtube.com/watch?v=sK5i-N34im8&list=PLBmVKD7o3L8v7Kl_XXh3KaJl9Qw2lyuFl
+https://www.bretfisher.com/docker-for-mac-commands-for-getting-into-local-docker-vm/
+https://www.bretfisher.com/getting-a-shell-in-the-docker-for-windows-vm/
+https://www.digitalocean.com/community/tutorials/package-management-basics-apt-yum-dnf-pkg
+https://docs.docker.com/config/formatting/
+
+- https://www.oracle.com/cloud/networking/dns/
+  https://howdns.works/
+  https://en.wikipedia.org/wiki/Round-robin_DNS
+  https://docs.docker.com/storage/storagedriver/
+  https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+  ***
+
 ### What is in an image and what is not
 
 - App binaries and dependencies
@@ -263,4 +285,4 @@ Output - just metadata!
 - This saves storage space on host and transfer time on push/pull
 - A container is just a single read/write layer on top of image
 - `docker image history` and `inspect` commands can teach us
-0
+  0

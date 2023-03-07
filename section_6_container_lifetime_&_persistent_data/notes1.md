@@ -17,3 +17,10 @@
 - Two ways: Volumes and Bind Mounts
 - Volumes: make special location outside of containers UFS
 - Bind Mounts: link container path to host path
+
+Interesting links:
+https://www.oreilly.com/radar/an-introduction-to-immutable-infrastructure/
+https://12factor.net/
+https://medium.com/@kelseyhightower/12-fractured-apps-1080c73d481c#.cjvkgw4b3
+https://docs.docker.com/storage/
+
