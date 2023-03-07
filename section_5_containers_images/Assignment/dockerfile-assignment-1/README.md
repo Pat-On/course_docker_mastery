@@ -20,6 +20,7 @@ No modifications to the app should be necessary, only edits to the Dockerfile in
 
 - you should use the `node` official image, with the alpine 6.x branch (`node:6-alpine`)
   - (Yes this is a 2-year old image of node, but all official images are always available on Docker Hub forever, to ensure even old apps still work. It is common to still need to deploy old app versions, even years later.)
+  
 - This app listens on port 3000, but the container should listen on port 80 of the Docker host, so it will respond to [http://localhost:80](http://localhost:80) on your computer
 - Then it should use the alpine package manager to install tini: `apk add --no-cache tini`.
 - Then it should create directory /usr/src/app for app files with `mkdir -p /usr/src/app`, or with the Dockerfile command `WORKDIR /usr/src/app`.
