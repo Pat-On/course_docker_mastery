@@ -24,13 +24,15 @@ https://www.bretfisher.com/getting-a-shell-in-the-docker-for-windows-vm/
 https://www.digitalocean.com/community/tutorials/package-management-basics-apt-yum-dnf-pkg
 https://docs.docker.com/config/formatting/
 
-- https://www.oracle.com/cloud/networking/dns/
-  https://howdns.works/
-  https://en.wikipedia.org/wiki/Round-robin_DNS
-  https://docs.docker.com/storage/storagedriver/
-  https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+---
 
-  ***
+https://www.oracle.com/cloud/networking/dns/
+https://howdns.works/
+https://en.wikipedia.org/wiki/Round-robin_DNS
+https://docs.docker.com/storage/storagedriver/
+https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+---
 
 ### What is in an image and what is not
 
