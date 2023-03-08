@@ -130,3 +130,42 @@ local     mysql-db
 ```
 
 `docker volume create` - required to do this before 'docker run' to use custom drivers and labels
+
+---
+
+# Persistent Data: Bind Mounting
+
+- Maps a host file or directory top a container or directory
+- Basically just two locations pointing to the same file(s)
+- Again, skips UFS, and host files overwrite any in container
+- Can't use in Dockerfile, must be at `container run`
+- `... run -v /Users/bret/stuff:/path/container` - (mac/linux)
+- `... run -v //c/Users/bret/stuff:/path/container` - (windows) - full path of course
+- it shine during development
+
+`docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html nginx`
+
+so after this command we are mapping it to our hdd in the host <- nice
+
+`docker container exec -it nginx bash`
+
+```
+root@579b2aeae48d:/usr/share/nginx/html# cat index.html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Your 2nd Dockerfile worked!</title>
+
+</head>
+
+<body>
+  <h1>You just successfully ran a container with a custom file copied into the image at build time!</h1>
+  <h1>TEST?</h1>
+</body>
+</html>
+root@579b2aeae48d:/usr/share/nginx/html#
+```
+
+You can use even `touch testFile.txt1` and create files in this directory that exists in the host
