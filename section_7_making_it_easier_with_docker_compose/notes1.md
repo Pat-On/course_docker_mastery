@@ -43,8 +43,25 @@ networks: # Optional, same as docker network create
 ```
 
 ## Interesting links:
+
 https://yaml.org/refcard.html
 https://docs.docker.com/compose/compose-file/compose-versioning/
 https://github.com/docker/compose/releases
 https://yaml.org/
 https://nodeca.github.io/js-yaml/
+
+---
+
+## Compose V2
+
+In 2022, Docker announced the General Availability of Docker Compose V2.
+
+It supports all the same commands taught in this course and is meant to be fully backward compatible. It's auto-installed by Docker Desktop.
+
+All you need to do is simply remove the dash from your Docker Compose commands:
+
+docker-compose up becomes docker compose up, etc.
+
+Behind the scenes, Docker has rebuilt the old docker-compose Python binary with go, the same language as the Docker CLI, and added Compose V2 as a CLI plugin rather than a separate command. It's now faster and more stable, and should "just work" as a drop-in replacement for the V1 docker-compose CLI.
+
+So anywhere in this course that I type docker-compose, just replace that with docker compose!
