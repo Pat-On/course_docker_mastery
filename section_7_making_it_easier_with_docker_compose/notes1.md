@@ -65,3 +65,50 @@ docker-compose up becomes docker compose up, etc.
 Behind the scenes, Docker has rebuilt the old docker-compose Python binary with go, the same language as the Docker CLI, and added Compose V2 as a CLI plugin rather than a separate command. It's now faster and more stable, and should "just work" as a drop-in replacement for the V1 docker-compose CLI.
 
 So anywhere in this course that I type docker-compose, just replace that with docker compose!
+
+---
+
+# 61. Trying out Basic Compose Commands
+
+Docker compose releases:
+https://github.com/docker/compose/releases
+
+## docker compose CLI
+
+- CLI tool comes with Docker for Windows/Mac, but separate download for Linux
+- Not a production-grade tool but ideal for local development and test
+- Two most common commands are:
+  - `docker compose up` - setup volumes/networks and start all containers
+  - `docker compose down` - stop all containers and remove cont/vol/net
+- If all your projects had a `Dockerfile` and `docker-compose.yml` the new developer oboarding would be: - `git clone github.com/some/software` - `docker compose up`
+
+`docker compose ps`
+
+```
+NAME                       IMAGE               COMMAND                  SERVICE             CREATED             STATUS              PORTS
+compose-sample-2-proxy-1   nginx:1.23          "/docker-entrypoint.…"   proxy               6 minutes ago       Up 6 minutes        0.0.0.0:80->80/tcp
+compose-sample-2-web-1     httpd:2             "httpd-foreground"       web                 6 minutes ago       Up 6 minutes        80/tcp
+```
+
+`docker compose top`
+
+```
+compose-sample-2-proxy-1
+UID     PID    PPID   C    STIME   TTY   TIME       CMD
+root    2605   2574   0    08:39   ?     00:00:00   nginx: master process nginx -g daemon off;
+uuidd   2819   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2820   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2821   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2822   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2823   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2824   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2825   2605   0    08:39   ?     00:00:00   nginx: worker process
+uuidd   2826   2605   0    08:39   ?     00:00:00   nginx: worker process
+
+compose-sample-2-web-1
+UID        PID    PPID   C    STIME   TTY   TIME       CMD
+root       2604   2554   0    08:39   ?     00:00:00   httpd -DFOREGROUND
+www-data   2730   2604   0    08:39   ?     00:00:00   httpd -DFOREGROUND
+www-data   2731   2604   0    08:39   ?     00:00:00   httpd -DFOREGROUND
+www-data   2732   2604   0    08:39   ?     00:00:00   httpd -DFOREGROUND
+```
