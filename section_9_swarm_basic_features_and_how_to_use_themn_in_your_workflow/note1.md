@@ -52,9 +52,16 @@ postgres:14
 then: `curl localhost:9200`
 
 ### Routing Mesh Cont.
+
 - (in version 17.03) This is stateless load balancing
 - This LB is at OSI Layer 3 (TCP), not Layer 4 (DNS)
-- Both limitation can be overcome with: 
-    - Nginx or HAProxy LB proxy, or
-    - Docker Enterprise Edition, which comes with built-in L4 web proxy
-    
+- Both limitation can be overcome with:
+  - Nginx or HAProxy LB proxy, or
+  - Docker Enterprise Edition, which comes with built-in L4 web proxy
+
+#### Networks in the Swarm
+
+bridge - this network driver only allows containers to talk on a single node, and not across nodes
+overlay - this network driver is used for container communication across a swarm
+
+additional reading: https://docs.docker.com/engine/swarm/ingress/
