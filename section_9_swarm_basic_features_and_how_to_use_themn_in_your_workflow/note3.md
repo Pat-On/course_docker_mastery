@@ -28,3 +28,66 @@ Secrets Storage Cont.
 - `/run/secrets/<secret_name>` or `/run/secrets/<secret_alias>`
 - local docker compose can use file-based secrets, but not secure! !IMPORTANT TO REMEMBER
   - it is actually faking the secure storage
+
+# 81 Using Secrets in Swarm Service
+
+Link: https://docs.docker.com/engine/swarm/secrets/
+
+## using file
+
+`docker secret create psql_user psql_user.txt`
+
+- drawback storring data on your server
+
+## from the command line:
+
+`echo "myDBpassWORD" | sudo docker secret create psql_pass -`
+
+`-` - dash command is telling cmd to read from the std input
+
+- history of the bash command
+
+`sudo docker secret ls`
+
+````
+ID NAME        DRIVER    CREATED              UPDATED
+vf0ko6bgvs3tm6naoalcf69pz   psql_pass             About a minute ago   About a minute ago
+y87eydpqz42023003lcx9v5fo   psql_user             2 minutes ago        2 minutes ago```
+````
+
+`sudo docker secret inspect psql_user`
+
+```
+[
+    {
+        "ID": "y87eydpqz42023003lcx9v5fo",
+        "Version": {
+            "Index": 313
+        },
+        "CreatedAt": "2023-03-11T18:00:25.164126568Z",
+        "UpdatedAt": "2023-03-11T18:00:25.164126568Z",
+        "Spec": {
+            "Name": "psql_user",
+            "Labels": {}
+        }
+    }
+]
+```
+
+only containers and services are going to have access to it
+
+# Manual creation of the service
+
+`docker service create --name psql --secret psql_user --secret psql_pass -e POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass -e POSTGRES_USER_FILE=/run/secrets/psql_user postgres`
+
+these POSTGRES_PASSWORD_FILE and POSTGRES_USER_FILE is build in into official images
+
+`sudo docker exec -it  psql.1.ka0zq6sboy6zmswy1c6rlr8ca bash`
+
+# removing rsecrets
+
+`docker service update --secret-rm `
+
+if i would remove the secret then containers with this secret would be removed and reinitialized.
+The reason of it is because we have immutable objects/containers
+.
