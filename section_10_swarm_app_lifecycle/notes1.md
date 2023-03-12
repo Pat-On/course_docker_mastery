@@ -63,37 +63,38 @@ This command is going to combine this files into one - this file would be the fi
 
 docker service update - https://docs.docker.com/engine/reference/commandline/service_update/
 
-
 ## Service Updates
+
 - Provides rolling replacement of tasks/containers in a service
 - Limits downtime (be careful with 'prevents' downtime)
-    - persistent things that require persistent connections are going to be the thoughts to update
-- Will replace containers for most changes 
-    - metadata label etc will not trigger it probably :>
+  - persistent things that require persistent connections are going to be the thoughts to update
+- Will replace containers for most changes
+  - metadata label etc will not trigger it probably :>
 - Has many, many cli options to control the update
 - create options will usually change, adding -add or -rm to them
 - Includes rollback and health check options
 - also has scale & rollback subcommand for quicker access
-    - `docker service scale web=4` and `docker service rollback web`
-- A stack deploy, when pre-existing, will issue service updates! 
+  - `docker service scale web=4` and `docker service rollback web`
+- A stack deploy, when pre-existing, will issue service updates!
 
 ## Swarm Update Examples
-- Just update the image used to a newer version
-    - `docker service update --image myapp:1.2.1 <servicename>`
-- Adding an env variable and remove a port
-    - `docker service update --env-add NODE_ENV=production --publish-rm 8080`
-- Change number of replicas of two services
-    - docker service scale web=8 api=6
 
+- Just update the image used to a newer version
+  - `docker service update --image myapp:1.2.1 <servicename>`
+- Adding an env variable and remove a port
+  - `docker service update --env-add NODE_ENV=production --publish-rm 8080`
+- Change number of replicas of two services
+  - docker service scale web=8 api=6
 
 ## Swarm Updates in Stack Files
+
 - Same command. Just edit the YAML file, then
-    - `docker stack deploy -c file.yml <stackname>`
-
-
+  - `docker stack deploy -c file.yml <stackname>`
 
 ---
+
 ## Commands used during testing:
+
 - `docker service create -p 8088:80 --name web nginx:1.13.7`
 - `docker service scale web=5`
 - `docker service update --image nginx:1.13.6 web`
@@ -101,6 +102,84 @@ docker service update - https://docs.docker.com/engine/reference/commandline/ser
 
 Docker Tip:
 FORCING UPDATE!
-YOu can use it to rebalanced the nodes! 
+YOu can use it to rebalanced the nodes!
 
 `docker service update --force web`
+
+# 88 Health-checks in Dockerfile
+
+Docker Health-checks
+
+- HEALTHCHECK was added in 1.12
+- supported in Dockerfile, Compose YAML, docker run and Swarm services
+- Docker engine will `exec`'s the command in the container
+  - (e.g. `curl localhost`)
+- it expects `exit 0` (ok) or `exit 1` (Error)
+- Three container states: starting (first 30 seconds), healthy (if 0), unhealthy (for example exit 1)
+- much better than "is binary still running?"
+- not a external monitoring replacement
+  - it is more for docker to understand if the container is healthy - it is not advance monitoring tool
+
+## Docker healthcheck container
+
+- Healthcheck status shows up in `docker container ls`
+- check last 5 healthchecks with `docker container inspect`
+- docker run does nothing with healthchecks
+- service will replace tasks if they fail healthcheck
+- service updates wait for them before counting
+
+## Healthcheck Docker Run Example
+
+(existing docker container that has no implemented healthcheck)
+
+```
+docker run \
+--health-cmd='curl -f localhost:9200/_cluster/health || false" \
+--health-interval=5s \
+--health-retries=3 \
+--health-timeout=2s \
+--health-start-period=15s \
+elasticsearch:2
+```
+
+## Healthcheck Dockerfile Example
+
+- Options for healthcheck command
+
+  - --interval=DURATION (default: 30s)
+  - --timeout=DURATION (default: 30s)
+  - --start-period=DURATION (default: 0s) (17.09++)
+  - --retries=N (default: 3)
+
+- Basic command using default options
+
+  - `HEALTHCHECK curl -f http://localhost/ || false`
+
+- Custom options with the command
+
+  ```
+  HEALTHCHECK --timeout=2s --interval=3s --retries=3 \
+  CMD curl -f http:localhost/ || exit 1
+  ```
+
+## Healthcheck in Nginx Dockerfile
+
+static website running in Nginx, just test default URL
+
+```
+FROM nginx:1.13
+
+HEALTHCHECK --interval=30s --timeout=3s \
+ CMD curl -f http://localhost/ || exit 1
+```
+
+sudo docker container run --name p1 -e POSTGRES_PASSWORD=pass -d postgres
+sudo docker container run --name p2 -e POSTGRES_PASSWORD=pass -d --health-cmd="pg_isready -U postgres || exit 1" postgres
+
+` sudo docker container ls -a`
+
+```
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                            PORTS      NAMES
+37123651d4bb   postgres   "docker-entrypoint.s…"   2 seconds ago    Up 2 seconds (health: starting)   5432/tcp   p8
+66c3abf998bd   postgres   "docker-entrypoint.s…"   40 seconds ago   Up 40 seconds                     5432/tcp   p4
+```
