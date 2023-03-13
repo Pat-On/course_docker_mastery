@@ -104,3 +104,14 @@ Exercise:
 https://training.play-with-docker.com/
 https://training.play-with-docker.com/linux-registry-part1/
 https://training.play-with-docker.com/linux-registry-part2/
+
+
+# 94 Using Docker Registry With Swarm
+
+## Private Docker Registry with Swarm
+- Works the same way as localhost
+- Because of Routing Mesh, all nodes can see 127.0.0.1:5000
+- Remember to decide how to store images (volume driver)
+- Note: All nodes must be able to access images
+- ProTip: use a hosted SaaS registry if possible - because they have many features! 
+
