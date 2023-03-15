@@ -25,6 +25,7 @@ Link:
         - `kubectl run test --image nginx --schedule "*/1 * * * *" --dry-run=client`   (in old version it would be chrome job etc)
 
 # 124 Imperative vs Declarative
+
     - Imperative: Focus on How a program operates
     - Declarative: Focus on What a program should accomplis
         - Example: "I'd like a cup of coffee"
@@ -33,6 +34,7 @@ Link:
             (Barista is the engine that works though the steps, including retrying to make a cup, and is only finished when I have a cup)
 
 ## Kubernetes Imperative
+
     - Examples: kubectl run, kubectl create deployment, kubectl update
         - we start with a state we know (no deployment exists)
         - we ask kubectl run to create a deployment
@@ -44,6 +46,7 @@ Link:
     - imperative is not easy to automate!
 
 ## Kubernetes Declarative
+
     - Example: kubectl apply -f my-resources.yaml
         - we do not know the current state
         - we only know what we want the end result to be (yaml contents)
@@ -54,5 +57,24 @@ Link:
     - the easiest way to automate
     - the eventual path to GitOps happiness
 
+# 125 Three Management Approaches
+
+- imperative commands: run, expose, scale, edit, create deployment
+  - best for dev/learning/personal projects
+  - easy to learn, hardest to manage over time
+- imperative objects: create -f file.yml, replace -f file.yml, delete..
+  - good for prod of small env, single file per command
+  - store your changes in git-based yaml files
+  - hard to automate
+- Declarative objects: apply -file.yml, or dir\, diff
+  - best for prod, easier to automate
+  - harder to understand and predict changes
 
 
+- Most important rule:
+    - do not mix the three approaches
+- Brets recommendations:
+    - learn the imperative CLI for easy control of local and test setups
+    - move to `ap-ply -f file.yml` and `apply -f directory\` for prod
+    - store yaml in git, git commit each change before you apply
+    - this trains you for later doing gitops (where git commits are automatically applied to clusters)
