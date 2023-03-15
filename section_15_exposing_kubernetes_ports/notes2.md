@@ -73,3 +73,29 @@ kubernetes   ClusterIP      10.96.0.1      <none>        443/TCP          23h
 - Lets remove the services and deploymetn
   - `kubectl delete service/httpenv service/httpenv-up`
   - `kubectl delete service/httpenv-lb deployment/httpenv`
+
+# 120 Kubernetes Service DNS
+
+Links:
+https://www.coredns.io/plugins/kubernetes/
+https://github.com/kubernetes/dns/blob/master/docs/specification.md
+
+- Starting with 1.11 internal DNS is provbided by CoreDNS
+- like swarm, this is DNS-Based Service Discovery
+- So far We have been using hostnames to access Services
+  - `curl <hostname>`
+- But that only works for services in the same namespace
+  - `kubectl get namespaces`
+- Services also have a FQDN
+  - `curl <hostname?.<namespace>.svc.cluster.local`
+
+`$ kubectl get namespaces`
+
+```
+NAME              STATUS   AGE
+default           Active   23h (most of the time you are dealing with this one)
+kube-node-lease   Active   23h ()
+kube-public       Active   23h ()
+kube-system       Active   23h (running control plane)
+```
+
