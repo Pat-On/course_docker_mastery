@@ -63,12 +63,13 @@ FIELDS:
   - `kubectl explain services.spec.type`
 
 - spec: can have sub spec: of other resources - `kubectl explain deployment.spec.template.spec.volumes.nfs.server`
-  -we can also use docs  
-   - Link: https://kubernetes.io/docs/reference/#api-reference
+  -we can also use docs
+  - Link: https://kubernetes.io/docs/reference/#api-reference
 
 ---
 
 # 131 Dry Runs and Diff's
+
 ## Testing YAML before deployment
 
     - dry-run a create (client side only)
@@ -79,6 +80,7 @@ FIELDS:
         - kubectl diff -f app.yml
 
 `$ kubectl diff -f app.yml`
+
 ```
 diff -u -N "C:\\Users\\Paton\\AppData\\Local\\Temp\\LIVE-2183679634/apps.v1.Deployment.default.app-nginx-deployment" "C:\\Users\\Paton\\AppData\\Local\\Temp\\MERGED-1781886807/apps.v1.Deployment.default.app-nginx-deployment"
 --- "C:\\Users\\Paton\\AppData\\Local\\Temp\\LIVE-2183679634/apps.v1.Deployment.default.app-nginx-deployment"   2023-03-16 06:11:58.132385200 +0000
@@ -106,3 +108,46 @@ diff -u -N "C:\\Users\\Paton\\AppData\\Local\\Temp\\LIVE-2183679634/apps.v1.Depl
 
 https://kubernetes.io/blog/2019/01/14/apiserver-dry-run-and-kubectl-diff/
 
+---
+
+# 132 Labels and Annotations
+
+## How label selectors are used
+
+- Labels goes under metadata: in your YAML
+- simple list of key: value for identifying your resource later by selecting, grouping, or filtering for it
+- Common examples include tier: frontend, app: api, env: prod, customer: acme.co
+- not meant to hold complex, large, or non-identifying info, which is what annotations are for
+- filtering a get command
+  - `kubectl get pods -l app=nginx`
+- apply only matching labels
+  - `kubectl apply -f myfile.yaml -l app=nginx`
+
+## Label Selector - IMPORTANT In referring between resources
+
+- the glue telling services and deployments which pods are theirs
+- many resources use label selectors to link resource dependencies
+- you will see these match up in the service and deployment yaml
+- use labels and selectors to control which pods go to which nodes
+- taints and tolerations also control node placement
+
+
+```
+  selector:
+    app: app-nginx
+--- # this is breaking point to separate it
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-nginx
+```
+
+# DELETE COMMAND
+
+- kubectl get all
+- kubectl delete <resource type>/<resource name>
